@@ -20,7 +20,7 @@ export const projects = [
     description: "A comprehensive job searching and tracking application that helps users find relevant job opportunities, track their application status, and manage their professional profile efficiently.",
     techStack: ["MERN Stack", "Redux", "Styled Components"],
     github: "https://github.com/Nitinkeldee/Jobify", 
-    live: "jobify.live", 
+    live: "https://jobify.live", 
     image: jobifyImg
   },
   {
