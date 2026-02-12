@@ -1,27 +1,12 @@
 import { m as motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { FaGithub, FaExternalLinkAlt, FaTimes, FaCode, FaArrowRight } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaTimes, FaCode, FaArrowRight, FaChrome, FaPalette } from 'react-icons/fa';
 import { projects } from '../../data/projects'; 
-
-// === 1. LOCAL IMAGE IMPORTS ===
-// Importing only files that actually exist in src/assets/images
-import eduMediaImg from '../../assets/images/Edumedia.jpg';
-import unisireImg from '../../assets/images/unisire.png';
-import yceImg from '../../assets/images/YCE.png';
 
 const PLACEHOLDER = 'https://via.placeholder.com/1200x800?text=Project+Preview';
 
-// keys must match: project.title.toLowerCase().replace(/[^a-z0-9]/g, '')
-const projectImageMap = {
-  edumedia: eduMediaImg,
-  unisire: unisireImg, 
-  youtubebookmarkextension: yceImg, 
-};
-
 const getProjectImage = (project) => {
-  if (!project?.title) return PLACEHOLDER;
-  const key = project.title.toLowerCase().replace(/[^a-z0-9]/g, '');
-  return projectImageMap[key] || PLACEHOLDER;
+  return project?.image || PLACEHOLDER;
 };
 
 // --- STACKING CARD COMPONENT ---
@@ -56,7 +41,7 @@ const Card = ({ i, project, setModal, progress, range, targetScale }) => {
                        <span key={tech} className="px-2 py-1 bg-stone-100 text-stone-600 rounded text-xs font-bold uppercase tracking-wider">{tech}</span>
                     ))}
                   </div>
-                  <p className="text-stone-600 text-sm md:text-base leading-relaxed">
+                  <p className="text-stone-600 text-sm md:text-base leading-relaxed line-clamp-4 md:line-clamp-none">
                     {project.description}
                   </p>
                </div>
@@ -64,20 +49,22 @@ const Card = ({ i, project, setModal, progress, range, targetScale }) => {
                <div className="flex items-center gap-4 mt-6 md:mt-0">
                   <button 
                      className="flex items-center gap-2 text-stone-900 font-bold border-b-2 border-stone-900 pb-1 hover:text-emerald-600 hover:border-emerald-600 transition-colors"
-                     aria-label={`View case study for ${project.title}`}
+                     aria-label={`View details for ${project.title}`}
                   >
-                     View Case Study <FaArrowRight size={12} />
+                     View Details <FaArrowRight size={12} />
                   </button>
-                  <a 
-                    href={project.github} 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="p-2 bg-stone-100 rounded-full hover:bg-stone-200 transition-colors" 
-                    onClick={(e) => e.stopPropagation()}
-                    aria-label="View source code on GitHub"
-                  >
-                    <FaGithub size={18} />
-                  </a>
+                  {project.github && (
+                    <a 
+                        href={project.github} 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="p-2 bg-stone-100 rounded-full hover:bg-stone-200 transition-colors" 
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="View source code on GitHub"
+                    >
+                        <FaGithub size={18} />
+                    </a>
+                  )}
                </div>
             </div>
 
@@ -86,7 +73,7 @@ const Card = ({ i, project, setModal, progress, range, targetScale }) => {
               <motion.div className="w-full h-full" style={{ scale: imageScale }}>
                  <img 
                     src={getProjectImage(project)} 
-                    alt={`Screenshot of ${project.title} project`}
+                    alt={`Preview of ${project.title}`}
                     loading="lazy"
                     width="800"
                     height="600"
@@ -164,7 +151,7 @@ export default function Projects() {
       <div className="h-[20vh]" />
 
 
-      {/* --- REUSED MODAL FROM PREVIOUS STEP (Keeping logic for consistency) --- */}
+      {/* --- MODAL --- */}
       {selectedProject && (
           <div 
             className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-stone-950/80 backdrop-blur-sm"
@@ -205,7 +192,7 @@ export default function Projects() {
                          <h3 id="modal-title" className="text-3xl font-bold text-stone-900 mb-2">{selectedProject.title}</h3>
                          <div className="flex gap-2">
                            <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase rounded tracking-wide">
-                             Key Project
+                             {selectedProject.subProjects ? 'Multi-Tool Collection' : 'Key Project'}
                            </span>
                          </div>
                     </div>
@@ -234,26 +221,46 @@ export default function Projects() {
                        </div>
                     </div>
 
-                    <div className="flex gap-4 pt-4">
-                       <a 
-                         href={selectedProject.github} 
-                         target="_blank" 
-                         rel="noreferrer" 
-                         className="flex-1 flex items-center justify-center gap-2 py-3 bg-stone-900 text-white rounded-lg font-bold hover:bg-stone-800 transition-all active:scale-95"
-                       >
-                           <FaGithub /> Code
-                       </a>
-                       {selectedProject.live && (
-                           <a 
-                             href={selectedProject.live} 
-                             target="_blank" 
-                             rel="noreferrer" 
-                             className="flex-1 flex items-center justify-center gap-2 py-3 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-all active:scale-95 shadow-lg shadow-emerald-200"
-                           >
-                               <FaExternalLinkAlt /> Live Demo
-                           </a>
-                       )}
-                    </div>
+                    {/* Rendering Sub-Projects OR Standard Buttons */}
+                    {selectedProject.subProjects ? (
+                        <div className="pt-4 space-y-3">
+                            <h4 className="text-xs font-bold text-stone-400 uppercase tracking-widest">Available Extensions</h4>
+                            {selectedProject.subProjects.map((sub, idx) => (
+                                <div key={idx} className="p-4 rounded-lg bg-stone-50 border border-stone-200 hover:bg-stone-100 transition-colors">
+                                    <div className="flex justify-between items-center mb-1">
+                                        <h5 className="font-bold text-stone-900">{sub.title}</h5>
+                                        <a href={sub.link} target="_blank" rel="noreferrer" className="text-emerald-600 hover:text-emerald-700">
+                                            <FaExternalLinkAlt size={14} />
+                                        </a>
+                                    </div>
+                                    <p className="text-xs text-stone-600">{sub.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex gap-4 pt-4">
+                           {selectedProject.github && (
+                               <a 
+                                 href={selectedProject.github} 
+                                 target="_blank" 
+                                 rel="noreferrer" 
+                                 className="flex-1 flex items-center justify-center gap-2 py-3 bg-stone-900 text-white rounded-lg font-bold hover:bg-stone-800 transition-all active:scale-95"
+                               >
+                                   <FaGithub /> Code
+                               </a>
+                           )}
+                           {selectedProject.live && (
+                               <a 
+                                 href={selectedProject.live} 
+                                 target="_blank" 
+                                 rel="noreferrer" 
+                                 className="flex-1 flex items-center justify-center gap-2 py-3 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-all active:scale-95 shadow-lg shadow-emerald-200"
+                               >
+                                   <FaExternalLinkAlt /> Live Demo
+                               </a>
+                           )}
+                        </div>
+                    )}
                  </div>
                </div>
             </motion.div>

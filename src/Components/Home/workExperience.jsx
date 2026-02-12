@@ -1,6 +1,6 @@
 import { m as motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef } from 'react';
-import { FaBuilding, FaCheck, FaArrowRight, FaLaptopCode, FaTrophy } from 'react-icons/fa';
+import { FaBuilding, FaCheck, FaArrowRight, FaLaptopCode, FaTrophy, FaGraduationCap } from 'react-icons/fa';
 
 const experiences = [
   {
@@ -34,6 +34,34 @@ const experiences = [
       "Improved real-time data flow via optimized REST API communication"
     ],
     tech: ["React", "Node.js", "Express.js", "MongoDB", "Redux", "Chrome Ext"]
+  },
+  {
+    id: 3,
+    title: "Bachelor of Technology",
+    subtitle: "Computer Science Engineering",
+    role: "Undergraduate Student",
+    period: "Dec 2024",
+    type: "Education",
+    icon: FaGraduationCap,
+    description: "Chandigarh Group of Colleges, Landran",
+    achievements: [
+        "CGPA: 8.2"
+    ],
+    tech: ["DSA", "Web Dev", "OS", "DBMS"]
+  },
+  {
+    id: 4,
+    title: "Higher Secondary (Non-Medical)",
+    subtitle: "Science Stream",
+    role: "Student",
+    period: "June 2020",
+    type: "Education",
+    icon: FaGraduationCap,
+    description: "G.S.S.S., Raipur Rani",
+    achievements: [
+        "CGPA: 9.1"
+    ],
+     tech: ["Physics", "Chemistry", "Maths"]
   }
 ];
 
@@ -58,41 +86,52 @@ const TimelineCard = ({ exp, index }) => {
             `}
           >
              {/* Header */}
-             <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
-                <div>
-                   <span className="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-1 block">{exp.type}</span>
-                   <h3 className="text-xl font-bold text-stone-900 group-hover:text-emerald-600 transition-colors">{exp.title}</h3>
+             <div className="flex flex-col md:flex-col justify-between mb-4 gap-1">
+                <div className="flex justify-between items-start">
+                   <div>
+                       <span className={`font-bold text-xs uppercase tracking-wider mb-1 block ${exp.type === 'Education' ? 'text-blue-600' : 'text-emerald-600'}`}>{exp.type}</span>
+                       <h3 className="text-xl font-bold text-stone-900 group-hover:text-emerald-600 transition-colors">{exp.title}</h3>
+                   </div>
+                   <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-xs font-mono font-bold whitespace-nowrap mt-1">
+                      {exp.period}
+                   </span>
                 </div>
-                <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-xs font-mono font-bold whitespace-nowrap">
-                   {exp.period}
-                </span>
+                {exp.subtitle && <span className="text-sm text-stone-500 font-medium">{exp.subtitle}</span>}
              </div>
 
              <div className="flex items-center gap-2 mb-4 text-sm font-medium text-stone-500">
-               <span className="p-1.5 bg-emerald-100 text-emerald-600 rounded-md"><Icon size={12} /></span>
+               <span className={`p-1.5 rounded-md ${exp.type === 'Education' ? 'bg-blue-100 text-blue-600' : 'bg-emerald-100 text-emerald-600'}`}><Icon size={12} /></span>
                {exp.role}
              </div>
 
-             <p className="text-stone-600 text-sm leading-relaxed mb-6">
+             <p className="text-stone-600 text-sm leading-relaxed mb-6 font-medium">
                {exp.description}
              </p>
 
-             <ul className="space-y-2 mb-6 bg-stone-50/50 p-4 rounded-lg">
-                {exp.achievements.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs md:text-sm text-stone-700">
-                     <FaCheck className="text-emerald-500 mt-1 flex-shrink-0" size={10} /> 
-                     <span>{item}</span>
-                  </li>
-                ))}
-             </ul>
+             {exp.achievements && exp.achievements.length > 0 && (
+                <ul className="space-y-2 mb-6 bg-stone-50/50 p-4 rounded-lg">
+                    {exp.achievements.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs md:text-sm text-stone-700">
+                        {exp.type === 'Education' ? (
+                            <FaTrophy className="text-yellow-500 mt-1 flex-shrink-0" size={10} />
+                        ) : (
+                            <FaCheck className="text-emerald-500 mt-1 flex-shrink-0" size={10} /> 
+                        )}
+                        <span>{item}</span>
+                    </li>
+                    ))}
+                </ul>
+             )}
 
-             <div className="flex flex-wrap gap-2">
-               {exp.tech.map(t => (
-                 <span key={t} className="px-2 py-1 bg-white border border-stone-200 rounded text-[10px] md:text-xs font-bold text-stone-500 uppercase tracking-wide">
-                   {t}
-                 </span>
-               ))}
-             </div>
+             {exp.tech && (
+                 <div className="flex flex-wrap gap-2">
+                   {exp.tech.map(t => (
+                     <span key={t} className="px-2 py-1 bg-white border border-stone-200 rounded text-[10px] md:text-xs font-bold text-stone-500 uppercase tracking-wide">
+                       {t}
+                     </span>
+                   ))}
+                 </div>
+             )}
           </motion.div>
        </div>
 
@@ -104,7 +143,7 @@ const TimelineCard = ({ exp, index }) => {
            whileInView={{ scale: 1, opacity: 1 }}
            viewport={{ once: true, margin: "-100px" }}
            transition={{ delay: 0.2, type: "spring" }}
-           className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-emerald-500 border-4 border-stone-100 z-20 shadow-[0_0_20px_rgba(16,185,129,0.5)]"
+           className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-4 border-stone-100 z-20 shadow-lg ${exp.type === 'Education' ? 'bg-blue-500 shadow-blue-500/50' : 'bg-emerald-500 shadow-emerald-500/50'}`}
          />
        </div>
 

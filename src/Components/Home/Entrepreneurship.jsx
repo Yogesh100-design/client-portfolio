@@ -1,6 +1,6 @@
 import { m as motion, useScroll, useSpring } from 'framer-motion';
 import { useRef } from 'react';
-import { FaLightbulb, FaRocket, FaCheck, FaArrowRight, FaChartLine } from 'react-icons/fa';
+import { FaLightbulb, FaRocket, FaCheck, FaArrowRight, FaChartLine, FaExternalLinkAlt } from 'react-icons/fa';
 
 const ventures = [
   {
@@ -11,6 +11,7 @@ const ventures = [
     period: "2024 - Present",
     type: "EdTech Startup",
     icon: FaLightbulb,
+    link: "https://www.unisire.com/",
     description: "India’s first and only student-focused learning and career assistance platform combining structured roadmaps, resume references, and automation tools in a single system.",
     achievements: [
       "Co-founded and led end-to-end product development, owning UI/UX, database design, and system architecture",
@@ -28,6 +29,7 @@ const ventures = [
     period: "2024 - Present",
     type: "Platform",
     icon: FaRocket,
+    link: "https://tasyai.vercel.app/",
     description: "A comprehensive platform dedicated to connecting talent with opportunities, fostering collaboration, and managing equity distribution for startups and teams.",
     achievements: [
       "Developing a unified marketplace for job seekers and employers",
@@ -62,7 +64,14 @@ const VentureCard = ({ exp, index }) => {
              <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-2">
                 <div>
                    <span className="text-emerald-600 font-bold text-xs uppercase tracking-wider mb-1 block">{exp.type}</span>
-                   <h3 className="text-xl font-bold text-stone-900 group-hover:text-emerald-600 transition-colors">{exp.title}</h3>
+                   <div className="flex items-center gap-2">
+                     <h3 className="text-xl font-bold text-stone-900 group-hover:text-emerald-600 transition-colors">{exp.title}</h3>
+                     {exp.link && (
+                       <a href={exp.link} target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-emerald-500 transition-colors" title="Visit Feature">
+                         <FaExternalLinkAlt size={14} />
+                       </a>
+                     )}
+                   </div>
                 </div>
                 <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-xs font-mono font-bold whitespace-nowrap">
                    {exp.period}

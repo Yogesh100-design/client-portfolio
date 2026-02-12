@@ -40,6 +40,7 @@ export default function Contact() {
     const loadingToast = toast.loading("Sending your message...");
 
     try {
+      // Using FormSubmit.co for backend-less email handling
       const response = await fetch("https://formsubmit.co/ajax/nitinparjapat02@gmail.com", {
         method: "POST",
         headers: { 
@@ -51,7 +52,8 @@ export default function Contact() {
             email: formData.email,
             subject: formData.subject || "New Portfolio Contact",
             message: formData.message,
-            _template: 'table'
+            _template: 'table',
+            _captcha: 'false' // Disabling captcha for smoother cleaner experience (optional)
         })
       });
 

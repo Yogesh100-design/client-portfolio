@@ -260,7 +260,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="flex items-center gap-6"
+                className="flex flex-wrap items-center gap-6"
               >
                 <a 
                   href="#projects" 
@@ -277,9 +277,19 @@ export default function Hero() {
                   </div>
                 </a>
                 
-                <a href="#contact" className="text-stone-600 hover:text-stone-900 font-medium transition-colors">
-                  Contact Me
+                <a 
+                  href="https://drive.google.com/file/d/1ADCc3cb5IdX5ueMCKeefApuMCmqfJ1lw/view?usp=drivesdk" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="group inline-flex h-12 items-center justify-center overflow-hidden rounded-md border border-stone-200 bg-white/50 backdrop-blur-sm px-6 font-medium text-stone-700 transition-all duration-300 hover:bg-stone-100 hover:text-stone-900 hover:border-stone-300"
+                >
+                  <svg className="mr-2 h-4 w-4 transition-transform group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  Download CV
                 </a>
+
+
              
               </motion.div>
             </motion.div>
